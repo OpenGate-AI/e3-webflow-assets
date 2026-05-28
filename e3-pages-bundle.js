@@ -1,3 +1,17 @@
+/* PREAMBLE: Block hideRoutes redirect for /affiliate and /story.
+   Must run before footer inline script. Restored after a few seconds. */
+(function(){
+  var p=location.pathname.replace(/\/+$/,'').toLowerCase();
+  if(p!=='/affiliate'&&p!=='/story')return;
+  var origIndexOf=Array.prototype.indexOf;
+  Array.prototype.indexOf=function(s){
+    if(s==='/affiliate'||s==='/story')return -1;
+    return origIndexOf.apply(this,arguments);
+  };
+  function restore(){Array.prototype.indexOf=origIndexOf;}
+  setTimeout(restore,3000);
+})();
+
 /* e3 standalone pages bundle — /affiliate + /story
    Injects premium content matching home/locations/membership aesthetic.
    Mounts CSS once, then dispatches per-path content. Idempotent. */
